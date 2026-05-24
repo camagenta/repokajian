@@ -1,0 +1,87 @@
+name: Telegram Auth Topic Freshness Spike
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "11 17 * * *" # daily 17:11 UTC = 00:11 WIB
+
+permissions:
+  contents: read
+
+jobs:
+  auth-spike:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TG_API_ID: ${{ secrets.TG_API_ID }}
+      TG_API_HASH: ${{ secrets.TG_API_HASH }}
+      TG_SESSION_STRING: ${{ secrets.TG_SESSION_STRING }}
+      TG_TARGET_SOURCE_ID: tg-sijadwalkajian
+      TG_TARGET_HANDLE: sijadwalkajian
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run auth spike freshness (retry x2)
+        run: |
+          set -euo pipefail
+          attempts=0
+          max_attempts=2
+          until [ "$attempts" -ge "$max_attempts" ]; do
+            attempts=$((attempts+1))
+            echo "Attempt $attempts/$max_attempts: npm run spike:topic-freshness"
+            if npm run spike:topic-freshness; then
+              break
+            fi
+            if [ "$attempts" -lt "$max_attempts" ]; then
+              echo "Retrying in 10s..."
+              sleep 10
+            fi
+          done
+          if [ "$attempts" -ge "$max_attempts" ]; then
+            echo "Spike freshness run failed after retries"
+            exit 1
+          fi
+
+      - name: Run mapping + evaluator
+        run: |
+          npm run spike:topic-mapping
+          npm run spike:topic-evaluate
+
+      - name: Validate spike status
+        run: |
+          node - <<'JS'
+          const fs = require('node:fs');
+          const spike = JSON.parse(fs.readFileSync('data/spikes/telegram-topic-freshness.json', 'utf8'));
+          const evaluated = JSON.parse(fs.readFileSync('data/spikes/telegram-topic-freshness-evaluated.json', 'utf8'));
+
+          const runStatus = spike?.run?.status;
+          const summary = evaluated?.summary || {};
+
+          console.log('[auth-spike] run.status =', runStatus);
+          console.log('[auth-spike] evaluated.summary =', summary);
+
+          if (runStatus === 'error' || runStatus === 'needs_setup') {
+            console.error('[auth-spike] invalid run status:', runStatus);
+            process.exit(1);
+          }
+          JS
+
+      - name: Upload spike artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: telegram-auth-topic-freshness
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/spikes/telegram-topic-freshness.json
+            data/spikes/telegram-topic-freshness-mapped.json
+            data/spikes/telegram-topic-freshness-evaluated.json

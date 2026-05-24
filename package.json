@@ -11,7 +11,11 @@
     "validate:sources": "node scripts/validate-sources.mjs",
     "check:source-links": "node scripts/check-source-links.mjs",
     "check:snapshot-relations": "node scripts/check-snapshot-relations.mjs",
-    "check:versioning": "node scripts/check-versioning.mjs"
+    "check:versioning": "node scripts/check-versioning.mjs",
+    "spike:topic-freshness": "tsx scripts/spikes/telegram-topic-freshness-spike.ts",
+    "spike:topic-mapping": "tsx scripts/spikes/topic-region-mapping-spike.ts",
+    "spike:topic-evaluate": "tsx scripts/spikes/topic-freshness-status-evaluator-spike.ts",
+    "spike:session-gen": "tsx scripts/spikes/generate-telegram-session.ts"
   },
   "dependencies": {
     "cheerio": "^1.0.0",
@@ -19,7 +23,8 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "telegram": "^2.26.22"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.15.11",

@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-05-24T12:10:43.560Z",
+  "source": {
+    "source_id": "tg-sijadwalkajian",
+    "handle": "sijadwalkajian",
+    "mode": "mtproto-auth-spike"
+  },
+  "auth": {
+    "method": "mtproto",
+    "has_api_id": false,
+    "has_api_hash": false,
+    "has_session_string": false
+  },
+  "run": {
+    "status": "needs_setup",
+    "message": "Missing one or more required secrets (TG_API_ID, TG_API_HASH, TG_SESSION_STRING)."
+  },
+  "topics": []
+}

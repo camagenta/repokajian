@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-05-24T12:10:47.029Z",
+  "source_artifact": "/var/mnt/hdd/projects/HSI_Vibathon/codebase/vibathon-2026/data/spikes/telegram-topic-freshness-mapped.json",
+  "policy": {
+    "active_lt_hours": 168,
+    "stale_lt_hours": 720,
+    "dead_gte_hours": 720
+  },
+  "summary": {
+    "total_topics": 0,
+    "active": 0,
+    "stale": 0,
+    "dead": 0,
+    "blocked": 0,
+    "error": 0
+  },
+  "topics": []
+}

@@ -1,0 +1,24 @@
+{
+  "version": "v0.1.0",
+  "updated_at": "2026-05-24",
+  "parent_source_id": "tg-sijadwalkajian",
+  "match_mode": "normalized-exact-first",
+  "rules": [
+    { "topic_title": "kajian jakarta", "region": "jakarta", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian bogor", "region": "bogor", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian tangerang", "region": "tangerang", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian tangerang selatan", "region": "tangerang-selatan", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian bekasi", "region": "bekasi", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian semarang", "region": "semarang", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian surabaya", "region": "surabaya", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian pekanbaru", "region": "pekanbaru", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian jambi", "region": "jambi", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian gresik", "region": "gresik", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian sulawesi selatan", "region": "sulawesi-selatan", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian kalimantan timur", "region": "kalimantan-timur", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian sumatra utara", "region": "sumatra-utara", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian lumajang", "region": "lumajang", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian situbondo", "region": "situbondo", "source_id": "tg-sijadwalkajian" },
+    { "topic_title": "kajian lombok", "region": "lombok", "source_id": "tg-sijadwalkajian" }
+  ]
+}

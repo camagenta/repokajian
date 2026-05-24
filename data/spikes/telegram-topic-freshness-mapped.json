@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-05-24T12:10:45.140Z",
+  "input_file": "/var/mnt/hdd/projects/HSI_Vibathon/codebase/vibathon-2026/data/spikes/telegram-topic-freshness.json",
+  "mapping_file": "/var/mnt/hdd/projects/HSI_Vibathon/codebase/vibathon-2026/data/spikes/topic-region-map.json",
+  "parent_source_id": "tg-sijadwalkajian",
+  "summary": {
+    "total_topics": 0,
+    "mapped_topics": 0,
+    "unmapped_topics": 0
+  },
+  "topics": []
+}
