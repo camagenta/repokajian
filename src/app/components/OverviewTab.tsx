@@ -267,10 +267,10 @@ export function OverviewTab({
         {/* Quick stats */}
         {latest && (
           <div className="mt-7 flex flex-wrap gap-6">
-            {[
-              { label: "Total Sources", value: total, color: "var(--slate)" },
-              { label: "Active", value: active, color: "var(--olive)" },
-              { label: "Monitored", value: monitored, color: "#5B8FB9" },
+              {[
+                { label: "Total Sources", value: total, color: "var(--slate)" },
+                { label: "Active", value: active, color: "var(--olive)" },
+                { label: "Monitored", value: monitored, color: "#5B8FB9" },
             ].map((s) => (
               <div key={s.label}>
                 <span className="font-serif text-[40px] leading-none font-medium" style={{ color: s.color }}>

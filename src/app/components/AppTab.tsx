@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { HealthStatus, LatestSummary, Platform, Snapshot, Source } from "../lib/data";
-import { CronPanel } from "./CronPanel";
 
 // ===== Config ==================================================
 
@@ -613,7 +612,7 @@ export function AppTab({ sources, latest }: { sources: Source[]; latest: LatestS
         </h2>
         <p className="mt-4 text-[var(--g700)] max-w-[640px]">
           {latest
-            ? `Snapshot terakhir: ${formatDateTime(latest.generated_at)} WIB. Daily cron via GitHub Actions refresh otomatis tiap 00:01 WIB.`
+            ? `Snapshot terakhir: ${formatDateTime(latest.generated_at)} WIB.`
             : `Belum ada snapshot. Trigger health check untuk generate data pertama kali.`}
         </p>
         {latest && (
@@ -626,8 +625,6 @@ export function AppTab({ sources, latest }: { sources: Source[]; latest: LatestS
         )}
         <ScoreExplainer />
       </section>
-
-      <CronPanel lastRunAt={latest?.generated_at ?? null} />
 
       {/* Dashboard section */}
       <div ref={sectionRef}>
