@@ -75,8 +75,8 @@ Memvalidasi kelayakan implementasi authenticated topic freshness sebelum integra
 
 Findings:
 - GitHub Secrets verified present in repo: `TG_API_ID`, `TG_API_HASH`, `TG_SESSION_STRING`.
-- Workflow manually dispatched on GitHub Actions: <https://github.com/t-onluring/vibathon-2026/actions/runs/26793883075>
-- Run branch/SHA: `main` / `88b6e2b0d05504bedc6f9c3bcda9bb43f022500c`.
+- Workflow manually dispatched on GitHub Actions: <https://github.com/t-onluring/vibathon-2026/actions/runs/26795370347>
+- Run branch/SHA: `main` / `1ff1c261ad6ab3f4621d90ff0d4ba233fac93d5b`.
 - Job conclusion: success.
 - Freshness step connected to Telegram MTProto and fetched 79 forum topics.
 - Freshness `run.status = ok`; `last_post_at` was resolved for 79/79 topics.
@@ -85,8 +85,8 @@ Findings:
   - name: `telegram-auth-topic-freshness`
   - run: <https://github.com/t-onluring/vibathon-2026/actions/runs/26793883075>
 - Mapping/evaluator results:
-  - mapping: `total_topics = 79`, `mapped_topics = 17`, `unmapped_topics = 62`
-  - evaluator: `total_topics = 79`, `active = 12`, `stale = 5`, `dead = 0`, `blocked = 62`, `error = 0`
+  - mapping: `total_topics = 79`, `mapped_topics = 77`, `ignored_topics = 2`, `unmapped_topics = 0`
+  - evaluator: `total_topics = 79`, `active = 34`, `stale = 39`, `dead = 4`, `blocked = 0`, `ignored = 2`, `error = 0`
 - Secrets were masked as `***` in logs.
 - Downloaded artifact inspection found no raw `text` keys, no raw Telegram message payload keys, and no secret literal values.
 
@@ -94,8 +94,8 @@ Day-1 checklist status:
 - Workflow execution: completed successfully without timeout or retry.
 - Artifact checks: completed; all three expected JSON artifacts were present.
 - Semantic checks: completed; `run.status = ok`, not `needs_setup` or `error`.
-- Mapping checks: partial; `mapped_topics = 17`, `unmapped_topics = 62`.
+- Mapping checks: completed; `mapped_topics = 77`, `ignored_topics = 2`, `unmapped_topics = 0`.
 - Security checks: no raw secret values or raw message text observed in inspected logs/artifacts.
 
 Required next action:
-- Expand `topic-region-map.json` for unmapped regions, then continue Day-2/Day-3 observation.
+- Continue Day-2/Day-3 observation with `Dapur Satu Data Kajian` and `General` counted as intentional ignores.
