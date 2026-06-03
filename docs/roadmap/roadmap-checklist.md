@@ -1,6 +1,6 @@
 # Roadmap Execution Checklist
 
-_Last updated: 2026-06-02_
+_Last updated: 2026-06-03_
 
 ## Current State
 
@@ -57,7 +57,7 @@ Note: parent/child visual grouping is deferred by the Phase 1.5 fallback plan be
 - [x] Mapping summary is stable: 77 mapped, 2 ignored, 0 unmapped.
 - [x] Evaluator summary is stable: 34 active, 39 stale, 4 dead, 0 blocked, 2 ignored, 0 error.
 - [x] Gate report exists: `docs/archive/TRACK-B-GATE-REPORT-2026-06-02.md`.
-- [ ] Complete valid Day-2 observation.
+- [x] Complete valid Day-2 observation.
 - [ ] Complete valid Day-3 observation.
 - [ ] Promote final Track B decision from provisional `GO WITH GUARDRAILS` to final `GO`, `GO WITH GUARDRAILS`, or `NO-GO`.
 

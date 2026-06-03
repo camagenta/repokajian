@@ -99,3 +99,33 @@ Day-1 checklist status:
 
 Required next action:
 - Continue Day-2/Day-3 observation with `Dapur Satu Data Kajian` and `General` counted as intentional ignores.
+
+### 2026-06-03 — Day-2 scheduled run
+
+Findings:
+- Workflow triggered by schedule on GitHub Actions: <https://github.com/t-onluring/vibathon-2026/actions/runs/26845616904>
+- Run branch/SHA: `main` / `a9f9e237af9a2df1b16159d937dd44d005bc2166`.
+- Job conclusion: success.
+- Freshness step connected to Telegram MTProto and fetched 79 forum topics.
+- Freshness `run.status = ok`; `last_post_at` was resolved for 79/79 topics.
+- Retry usage: attempt 1/2 succeeded; no retry needed.
+- Artifact uploaded successfully:
+  - name: `telegram-auth-topic-freshness`
+  - run: <https://github.com/t-onluring/vibathon-2026/actions/runs/26845616904>
+  - artifact id: `7368832672`
+  - digest: `sha256:e8406b15453a686828eae6d0364421b9c106d9dde173d5621639b0632c4333e0`
+- Mapping/evaluator results:
+  - mapping: `total_topics = 79`, `mapped_topics = 77`, `ignored_topics = 2`, `unmapped_topics = 0`
+  - evaluator: `total_topics = 79`, `active = 30`, `stale = 43`, `dead = 4`, `blocked = 0`, `ignored = 2`, `error = 0`
+- Secrets were masked as `***` in logs.
+- Downloaded artifact inspection found no suspicious raw-message keys.
+
+Day-2 checklist status:
+- Workflow execution: completed successfully without timeout or retry.
+- Artifact checks: completed; all three expected JSON artifacts were present.
+- Semantic checks: completed; `run.status = ok`, not `needs_setup` or `error`.
+- Mapping checks: completed; `mapped_topics = 77`, `ignored_topics = 2`, `unmapped_topics = 0`.
+- Security checks: no raw secret values or raw message text observed in inspected logs/artifacts.
+
+Required next action:
+- Continue Day-3 observation with `Dapur Satu Data Kajian` and `General` counted as intentional ignores.
