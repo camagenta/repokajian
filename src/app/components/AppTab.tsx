@@ -1,11 +1,106 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { DivIcon, LayerGroup, Map as LeafletMap } from "leaflet";
 import type { HealthHistoryPoint, HealthStatus, LatestSummary, Platform, Snapshot, Source, TopicDiscovery, TopicDiscoveryStatus } from "../lib/data";
 
 // ===== Config ==================================================
 
 type SortKey = "score" | "name" | "subs";
+
+type RegionHealthTone = "healthy" | "risk" | "unknown";
+
+type RegionGeoPoint = {
+  lat: number;
+  lng: number;
+};
+
+type RegionHealthSummary = {
+  regionKey: string;
+  regionLabel: string;
+  total: number;
+  monitored: number;
+  active: number;
+  stale: number;
+  dead: number;
+  blocked: number;
+  error: number;
+  unmonitored: number;
+  avgScore: number | null;
+  activeRatio: number | null;
+};
+
+const REGION_LABELS: Record<string, string> = {
+  nasional: "Nasional",
+  yogyakarta: "Yogyakarta",
+  balikpapan: "Balikpapan",
+  bandung: "Bandung",
+  cimahi: "Cimahi",
+  depok: "Depok",
+  gresik: "Gresik",
+  kuningan: "Kuningan",
+  surabaya: "Surabaya",
+  unknown: "Unknown Region",
+};
+
+const REGION_GEO_POINTS: Record<string, RegionGeoPoint> = {
+  nasional: { lat: -2.5, lng: 118.0 },
+  depok: { lat: -6.4025, lng: 106.7942 },
+  bandung: { lat: -6.9175, lng: 107.6191 },
+  cimahi: { lat: -6.8722, lng: 107.5425 },
+  kuningan: { lat: -6.9758, lng: 108.4831 },
+  yogyakarta: { lat: -7.7956, lng: 110.3695 },
+  surabaya: { lat: -7.2575, lng: 112.7521 },
+  gresik: { lat: -7.1567, lng: 112.6555 },
+  balikpapan: { lat: -1.2379, lng: 116.8529 },
+  unknown: { lat: -8.4095, lng: 115.1889 },
+};
+
+const REGION_TONE_STYLES: Record<RegionHealthTone, { fill: string; stroke: string; text: string; label: string }> = {
+  healthy: { fill: "var(--olive)", stroke: "#556B43", text: "Healthy", label: "Healthy" },
+  risk: { fill: "var(--clay)", stroke: "var(--clay-d)", text: "Needs attention", label: "Needs attention" },
+  unknown: { fill: "var(--g300)", stroke: "var(--g500)", text: "Unmonitored", label: "Unmonitored" },
+};
+
+function normalizeRegionKey(value: string | null | undefined): string {
+  const normalized = (value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+  return normalized || "unknown";
+}
+
+function titleCaseRegion(regionKey: string): string {
+  return regionKey
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ") || "Unknown Region";
+}
+
+function getRegionLabel(regionKey: string): string {
+  return REGION_LABELS[regionKey] ?? titleCaseRegion(regionKey);
+}
+
+function getBubbleRadius(total: number): number {
+  return Math.max(7, Math.min(24, 6 + Math.sqrt(total) * 4));
+}
+
+function getRegionHealthTone(summary: RegionHealthSummary): RegionHealthTone {
+  if (summary.monitored === 0) return "unknown";
+  if ((summary.activeRatio ?? 0) >= 0.7) return "healthy";
+  return "risk";
+}
+
+function formatRegionRatio(summary: RegionHealthSummary): string {
+  return summary.activeRatio != null ? `${Math.round(summary.activeRatio * 100)}% active` : "n/a";
+}
+
+function formatRegionScore(summary: RegionHealthSummary): string {
+  return summary.avgScore != null ? String(Math.round(summary.avgScore * 100)) : "—";
+}
 
 const STATUS_META: Record<HealthStatus, { label: string; bg: string; fg: string; dot: string; ringColor: string }> = {
   active:      { label: "Active",      bg: "bg-[var(--olive)]/15",  fg: "text-[var(--olive)]",  dot: "bg-[var(--olive)]",  ringColor: "#788C5D" },
@@ -436,6 +531,342 @@ function MiniStat({ label, value, accent }: { label: string; value: number; acce
   );
 }
 
+// ===== Region health panel ====================================
+
+function RegionHealthPanel({
+  summaries,
+  selectedRegion,
+  onSelectRegion,
+  hasSnapshot,
+}: {
+  summaries: RegionHealthSummary[];
+  selectedRegion: string;
+  onSelectRegion: (regionKey: string) => void;
+  hasSnapshot: boolean;
+}) {
+  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
+  const totalRegions = summaries.length;
+  const selectedSummary = summaries.find((summary) => summary.regionKey === selectedRegion) ?? null;
+  const activeSummary = selectedSummary ?? summaries.find((summary) => summary.regionKey === hoveredRegion) ?? null;
+  const allSummary = useMemo(() => buildAllRegionSummary(summaries), [summaries]);
+  const detailSummary = activeSummary ?? allSummary;
+
+  return (
+    <section className="mb-8 rounded-xl border border-[var(--g300)] bg-[var(--paper)] p-5">
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="eyebrow mb-2">Kota / Region Health</p>
+          <h3 className="font-semibold text-[16px] text-[var(--slate)]">Peta health source kajian</h3>
+          <p className="mt-1 max-w-[700px] text-[12.5px] leading-relaxed text-[var(--g700)]">
+            Bubble menunjukkan jumlah source per kota/region. Warna menunjukkan kondisi health; klik/tap bubble untuk memfilter daftar source di bawah.
+          </p>
+        </div>
+        <div className="rounded-lg border border-[var(--g300)] bg-[var(--ivory)] px-3 py-2 text-right">
+          <div className="font-serif text-[24px] leading-none text-[var(--slate)]">{totalRegions}</div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--g500)]">regions</div>
+        </div>
+      </div>
+
+      {!hasSnapshot && summaries.length > 0 && (
+        <div className="mb-4 rounded-lg border border-dashed border-[var(--g300)] bg-[var(--g100)] px-4 py-3 text-[12.5px] text-[var(--g700)]">
+          Belum ada snapshot health. Region ditampilkan sebagai unmonitored.
+        </div>
+      )}
+
+      {summaries.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-[var(--g300)] bg-[var(--g100)] px-4 py-3 text-[12.5px] text-[var(--g700)]">
+          Belum ada source untuk dirangkum.
+        </div>
+      ) : (
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px]">
+          <div className="rounded-xl border border-[var(--g300)] bg-[var(--ivory)] p-4">
+            <LeafletRegionMap
+              summaries={summaries}
+              selectedRegion={selectedRegion}
+              onSelectRegion={onSelectRegion}
+              onHoverRegion={setHoveredRegion}
+            />
+
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[11px] text-[var(--g600)]">
+              <div className="flex flex-wrap items-center gap-3">
+                <LegendDot tone="healthy" />
+                <LegendDot tone="risk" />
+                <LegendDot tone="unknown" />
+              </div>
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--g500)]">
+                <span>Size = jumlah source</span>
+                <span className="inline-block size-3 rounded-full bg-[var(--g300)]" />
+                <span className="inline-block size-5 rounded-full bg-[var(--g300)]" />
+                <span className="inline-block size-7 rounded-full bg-[var(--g300)]" />
+              </div>
+            </div>
+          </div>
+
+          <RegionSummaryPanel
+            summary={detailSummary}
+            selected={Boolean(selectedSummary)}
+            onClear={() => onSelectRegion("all")}
+          />
+        </div>
+      )}
+    </section>
+  );
+}
+
+function buildAllRegionSummary(summaries: RegionHealthSummary[]): RegionHealthSummary {
+  const total = summaries.reduce((sum, summary) => sum + summary.total, 0);
+  const monitored = summaries.reduce((sum, summary) => sum + summary.monitored, 0);
+  const active = summaries.reduce((sum, summary) => sum + summary.active, 0);
+  const stale = summaries.reduce((sum, summary) => sum + summary.stale, 0);
+  const dead = summaries.reduce((sum, summary) => sum + summary.dead, 0);
+  const blocked = summaries.reduce((sum, summary) => sum + summary.blocked, 0);
+  const error = summaries.reduce((sum, summary) => sum + summary.error, 0);
+  const unmonitored = summaries.reduce((sum, summary) => sum + summary.unmonitored, 0);
+  const scoreWeight = summaries.reduce((sum, summary) => sum + (summary.avgScore ?? 0) * summary.monitored, 0);
+
+  return {
+    regionKey: "all",
+    regionLabel: "All regions",
+    total,
+    monitored,
+    active,
+    stale,
+    dead,
+    blocked,
+    error,
+    unmonitored,
+    avgScore: monitored > 0 ? scoreWeight / monitored : null,
+    activeRatio: monitored > 0 ? active / monitored : null,
+  };
+}
+
+function LeafletRegionMap({
+  summaries,
+  selectedRegion,
+  onSelectRegion,
+  onHoverRegion,
+}: {
+  summaries: RegionHealthSummary[];
+  selectedRegion: string;
+  onSelectRegion: (regionKey: string) => void;
+  onHoverRegion: (regionKey: string | null) => void;
+}) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
+  const markerLayerRef = useRef<LayerGroup | null>(null);
+  const [mapReady, setMapReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function initMap() {
+      const L = await import("leaflet");
+      if (cancelled || !containerRef.current || mapRef.current) return;
+
+      const map = L.map(containerRef.current, {
+        center: [-2.5, 118],
+        zoom: 4,
+        minZoom: 3,
+        maxZoom: 10,
+        zoomControl: true,
+        scrollWheelZoom: false,
+      });
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      markerLayerRef.current = L.layerGroup().addTo(map);
+      mapRef.current = map;
+      setMapReady(true);
+    }
+
+    initMap();
+
+    return () => {
+      cancelled = true;
+      mapRef.current?.remove();
+      mapRef.current = null;
+      markerLayerRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function renderMarkers() {
+      const L = await import("leaflet");
+      if (cancelled || !mapReady || !mapRef.current || !markerLayerRef.current) return;
+
+      markerLayerRef.current.clearLayers();
+
+      for (const summary of summaries) {
+        const point = REGION_GEO_POINTS[summary.regionKey] ?? REGION_GEO_POINTS.unknown;
+        const tone = getRegionHealthTone(summary);
+        const style = REGION_TONE_STYLES[tone];
+        const selected = selectedRegion === summary.regionKey;
+        const size = Math.max(36, getBubbleRadius(summary.total) * 2.25);
+        const icon = createRegionDivIcon(L, summary, size, style, selected);
+
+        const marker = L.marker([point.lat, point.lng], {
+          icon,
+          keyboard: true,
+          title: `${summary.regionLabel}: ${summary.total} sources`,
+          zIndexOffset: selected ? 1000 : summary.regionKey === "nasional" ? 500 : 0,
+        })
+          .bindTooltip(getRegionTooltipHtml(summary), {
+            direction: "top",
+            offset: [0, -Math.round(size / 2)],
+            opacity: 0.98,
+            className: "region-leaflet-tooltip",
+          })
+          .on("click", () => onSelectRegion(summary.regionKey))
+          .on("mouseover", () => onHoverRegion(summary.regionKey))
+          .on("mouseout", () => onHoverRegion(null))
+          .on("focus", () => onHoverRegion(summary.regionKey))
+          .on("blur", () => onHoverRegion(null));
+
+        marker.addTo(markerLayerRef.current);
+      }
+
+      const selectedSummary = summaries.find((summary) => summary.regionKey === selectedRegion);
+      if (selectedSummary) {
+        const point = REGION_GEO_POINTS[selectedSummary.regionKey] ?? REGION_GEO_POINTS.unknown;
+        mapRef.current.flyTo([point.lat, point.lng], selectedSummary.regionKey === "nasional" ? 4 : 8, { duration: 0.45 });
+      }
+    }
+
+    renderMarkers();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mapReady, summaries, selectedRegion, onSelectRegion, onHoverRegion]);
+
+  return (
+    <div className="overflow-hidden rounded-lg border border-[var(--g300)] bg-[var(--g100)]">
+      <div ref={containerRef} className="h-[280px] w-full sm:h-[340px]" aria-label="Peta Leaflet health source kajian per region Indonesia" />
+    </div>
+  );
+}
+
+function createRegionDivIcon(
+  L: typeof import("leaflet"),
+  summary: RegionHealthSummary,
+  size: number,
+  style: { fill: string; stroke: string; text: string; label: string },
+  selected: boolean,
+): DivIcon {
+  const aggregate = summary.regionKey === "nasional" ? '<em class="region-leaflet-aggregate">aggregate</em>' : "";
+  return L.divIcon({
+    className: "region-leaflet-icon",
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    html: `
+      <div class="region-leaflet-marker${selected ? " is-selected" : ""}" style="--marker-size:${size}px;--marker-fill:${style.fill};--marker-stroke:${selected ? "var(--slate)" : style.stroke};">
+        <span>${summary.total}</span>
+        ${aggregate}
+      </div>
+    `,
+  });
+}
+
+function getRegionTooltipHtml(summary: RegionHealthSummary): string {
+  return `
+    <strong>${summary.regionLabel}</strong>
+    <span>${summary.total} sources · ${summary.monitored} monitored</span>
+    <span>Active ${summary.active} · Dead ${summary.dead} · Unmon ${summary.unmonitored}</span>
+    <span>Score ${formatRegionScore(summary)} · ${formatRegionRatio(summary)}</span>
+  `;
+}
+
+function LegendDot({ tone }: { tone: RegionHealthTone }) {
+  const style = REGION_TONE_STYLES[tone];
+  return (
+    <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--g600)]">
+      <span className="size-2.5 rounded-full" style={{ background: style.fill, border: `1px solid ${style.stroke}` }} />
+      {style.text}
+    </span>
+  );
+}
+
+function RegionSummaryPanel({
+  summary,
+  selected,
+  onClear,
+}: {
+  summary: RegionHealthSummary;
+  selected: boolean;
+  onClear: () => void;
+}) {
+  const tone = getRegionHealthTone(summary);
+  const style = REGION_TONE_STYLES[tone];
+
+  return (
+    <aside className="rounded-xl border border-[var(--g300)] bg-[var(--ivory)] p-4">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <p className="eyebrow mb-2">{selected ? "Selected region" : "All regions"}</p>
+          <h4 className="font-semibold text-[17px] text-[var(--slate)]">{summary.regionLabel}</h4>
+          <p className="mt-1 font-mono text-[11px] text-[var(--g500)]">
+            {summary.total} sources · {summary.monitored} monitored
+          </p>
+        </div>
+        <span className="rounded-full px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white" style={{ background: style.fill }}>
+          {style.label}
+        </span>
+      </div>
+
+      <div className="mb-4 grid grid-cols-2 gap-2">
+        <div className="rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-3 py-2">
+          <div className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-[var(--g500)]">Avg score</div>
+          <div className="mt-1 font-serif text-[26px] leading-none text-[var(--slate)]">{formatRegionScore(summary)}</div>
+        </div>
+        <div className="rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-3 py-2">
+          <div className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-[var(--g500)]">Active ratio</div>
+          <div className="mt-1 font-serif text-[26px] leading-none text-[var(--slate)]">{formatRegionRatio(summary).replace(" active", "")}</div>
+        </div>
+      </div>
+
+      <div className="space-y-2 font-mono text-[11px] text-[var(--g600)]">
+        <StatusCount label="Active" value={summary.active} status="active" />
+        <StatusCount label="Stale" value={summary.stale} status="stale" />
+        <StatusCount label="Dead" value={summary.dead} status="dead" />
+        <StatusCount label="Blocked" value={summary.blocked} status="blocked" />
+        <StatusCount label="Error" value={summary.error} status="error" />
+        <StatusCount label="Unmonitored" value={summary.unmonitored} status="unmonitored" />
+      </div>
+
+      {selected ? (
+        <button
+          type="button"
+          onClick={onClear}
+          className="mt-4 w-full rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-3 py-2 text-[12px] font-medium text-[var(--slate)] transition-colors hover:border-[var(--g500)]"
+        >
+          Clear region filter
+        </button>
+      ) : (
+        <p className="mt-4 rounded-lg border border-dashed border-[var(--g300)] bg-[var(--paper)] px-3 py-2 text-[12px] leading-relaxed text-[var(--g600)]">
+          Pilih bubble kota/region untuk memfilter daftar source. Detail ini tetap muncul di mobile tanpa bergantung pada hover.
+        </p>
+      )}
+    </aside>
+  );
+}
+
+function StatusCount({ label, value, status }: { label: string; value: number; status: HealthStatus }) {
+  const meta = STATUS_META[status];
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="inline-flex items-center gap-1.5">
+        <span className={`size-1.5 rounded-full ${meta.dot}`} />
+        {label}
+      </span>
+      <span className="font-semibold text-[var(--slate)]">{value}</span>
+    </div>
+  );
+}
+
 // ===== Skeleton components ====================================
 
 function SkeletonBox({ w = "100%", h = 14, r = 6 }: { w?: string | number; h?: number; r?: number }) {
@@ -710,29 +1141,71 @@ export function AppTab({
     return c;
   }, [rows]);
 
-  const regionFilterKeys = useMemo(() => {
-    const regions = Array.from(new Set(sources.map((s) => s.region).filter(Boolean)));
-    const normalized = regions.sort((a, b) => {
-      if (a === "nasional") return -1;
-      if (b === "nasional") return 1;
-      return a.localeCompare(b, "id");
-    });
-    return [{ key: "all", label: "All" }, ...normalized.map((region) => ({ key: region, label: region }))];
-  }, [sources]);
+  const regionSummaries = useMemo<RegionHealthSummary[]>(() => {
+    const byRegion = new Map<string, RegionHealthSummary & { scoreSum: number; scoreCount: number }>();
+
+    for (const { source, snapshot } of rows) {
+      const regionKey = normalizeRegionKey(source.region);
+      const existing = byRegion.get(regionKey) ?? {
+        regionKey,
+        regionLabel: getRegionLabel(regionKey),
+        total: 0,
+        monitored: 0,
+        active: 0,
+        stale: 0,
+        dead: 0,
+        blocked: 0,
+        error: 0,
+        unmonitored: 0,
+        avgScore: null,
+        activeRatio: null,
+        scoreSum: 0,
+        scoreCount: 0,
+      };
+      const status = snapshot?.status ?? "unmonitored";
+      existing.total += 1;
+      existing[status] += 1;
+      if (status !== "unmonitored") existing.monitored += 1;
+      if (typeof snapshot?.confidence_score === "number") {
+        existing.scoreSum += snapshot.confidence_score;
+        existing.scoreCount += 1;
+      }
+      byRegion.set(regionKey, existing);
+    }
+
+    return Array.from(byRegion.values())
+      .map(({ scoreSum, scoreCount, ...summary }) => ({
+        ...summary,
+        avgScore: scoreCount > 0 ? scoreSum / scoreCount : null,
+        activeRatio: summary.monitored > 0 ? summary.active / summary.monitored : null,
+      }))
+      .sort((a, b) => {
+        if (a.regionKey === "nasional") return -1;
+        if (b.regionKey === "nasional") return 1;
+        return b.total - a.total
+          || b.active - a.active
+          || a.regionLabel.localeCompare(b.regionLabel, "id");
+      });
+  }, [rows]);
+
+  const regionFilterKeys = useMemo(() => [
+    { key: "all", label: "All" },
+    ...regionSummaries.map((summary) => ({ key: summary.regionKey, label: summary.regionLabel })),
+  ], [regionSummaries]);
 
   const regionCounts = useMemo(() => {
     const c: Record<string, number> = { all: rows.length };
-    for (const { source } of rows) {
-      c[source.region] = (c[source.region] ?? 0) + 1;
+    for (const summary of regionSummaries) {
+      c[summary.regionKey] = summary.total;
     }
     return c;
-  }, [rows]);
+  }, [rows.length, regionSummaries]);
 
   const filtered = useMemo(() => {
     let r = rows;
     if (statusFilter !== "all") r = r.filter(({ snapshot }) => (snapshot?.status ?? "unmonitored") === statusFilter);
     if (platformFilter !== "all") r = r.filter(({ source }) => source.platform === platformFilter);
-    if (regionFilter !== "all") r = r.filter(({ source }) => source.region === regionFilter);
+    if (regionFilter !== "all") r = r.filter(({ source }) => normalizeRegionKey(source.region) === regionFilter);
     if (search) {
       const q = search.toLowerCase();
       r = r.filter(({ source }) =>
@@ -795,6 +1268,14 @@ export function AppTab({
 
       {/* Dashboard section */}
       <div ref={sectionRef}>
+
+        <RegionHealthPanel
+          summaries={regionSummaries}
+          selectedRegion={regionFilter}
+          onSelectRegion={setRegionFilter}
+          hasSnapshot={Boolean(latest)}
+        />
+
         {/* Trend chart */}
         <div className="mb-8">
           {loading ? <SkeletonChart /> : <TrendChart data={aggregateHistory} />}
@@ -888,7 +1369,7 @@ export function AppTab({
                 {regionFilterKeys.map(({ key, label }) => (
                   <button key={key} type="button" onClick={() => setRegionFilter(key)}
                     className={[
-                      "px-3 py-1 rounded-full text-[11.5px] font-mono border transition-all duration-150 whitespace-nowrap capitalize",
+                      "px-3 py-1 rounded-full text-[11.5px] font-mono border transition-all duration-150 whitespace-nowrap",
                       regionFilter === key
                         ? "bg-[var(--slate)] text-[var(--ivory)] border-[var(--slate)]"
                         : "bg-transparent text-[var(--g700)] border-[var(--g300)] hover:border-[var(--g500)]",

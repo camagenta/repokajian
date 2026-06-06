@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
   --ivory:  #FAF9F5;
@@ -186,4 +187,69 @@ body {
   content: "";
   width: 24px; height: 1.5px;
   background: var(--clay);
+}
+
+/* === Leaflet region health map ============================================ */
+.region-leaflet-icon {
+  background: transparent;
+  border: 0;
+}
+.region-leaflet-marker {
+  width: var(--marker-size);
+  height: var(--marker-size);
+  border-radius: 999px;
+  border: 2px solid var(--marker-stroke);
+  background: var(--marker-fill);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono-stack);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgb(20 20 19 / 0.18);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+.region-leaflet-marker:hover,
+.region-leaflet-marker.is-selected {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 5px rgb(20 20 19 / 0.14), 0 12px 24px rgb(20 20 19 / 0.2);
+}
+.region-leaflet-aggregate {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--g600, var(--g500));
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgb(20 20 19 / 0.12);
+}
+.region-leaflet-tooltip {
+  border: 1px solid var(--g300);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--g700);
+  box-shadow: 0 10px 28px rgb(20 20 19 / 0.16);
+  font-family: var(--font-mono-stack);
+  font-size: 11px;
+  line-height: 1.45;
+  padding: 8px 10px;
+}
+.region-leaflet-tooltip strong,
+.region-leaflet-tooltip span {
+  display: block;
+}
+.region-leaflet-tooltip strong {
+  color: var(--slate);
+  font-family: var(--font-sans-stack);
+  font-size: 12px;
+  margin-bottom: 2px;
 }
