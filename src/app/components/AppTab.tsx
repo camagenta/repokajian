@@ -659,12 +659,14 @@ function LeafletRegionMap({
 
   useEffect(() => {
     let cancelled = false;
+    let resizeObserver: ResizeObserver | null = null;
 
     async function initMap() {
       const L = await import("leaflet");
       if (cancelled || !containerRef.current || mapRef.current) return;
 
-      const map = L.map(containerRef.current, {
+      const mapContainer = containerRef.current;
+      const map = L.map(mapContainer, {
         center: [-5.5, 110.5],
         zoom: 5,
         minZoom: 3,
@@ -673,8 +675,8 @@ function LeafletRegionMap({
         scrollWheelZoom: false,
       });
 
-      const tileLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      const tileLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
       })
         .on("loading", () => setTilesReady(false))
         .on("load", () => setTilesReady(true))
@@ -682,6 +684,15 @@ function LeafletRegionMap({
 
       markerLayerRef.current = L.layerGroup().addTo(map);
       mapRef.current = map;
+
+      const refreshSize = () => {
+        map.invalidateSize({ pan: false });
+      };
+      requestAnimationFrame(refreshSize);
+      window.setTimeout(refreshSize, 150);
+      resizeObserver = new ResizeObserver(refreshSize);
+      resizeObserver.observe(mapContainer);
+
       setMapReady(true);
       setTilesReady(tileLayer.isLoading ? !tileLayer.isLoading() : true);
     }
@@ -690,6 +701,7 @@ function LeafletRegionMap({
 
     return () => {
       cancelled = true;
+      resizeObserver?.disconnect();
       mapRef.current?.remove();
       mapRef.current = null;
       markerLayerRef.current = null;
@@ -717,7 +729,6 @@ function LeafletRegionMap({
         const marker = L.marker([point.lat, point.lng], {
           icon,
           keyboard: true,
-          title: `${summary.regionLabel}: ${summary.total} sources`,
           zIndexOffset: selected ? 1000 : 0,
         })
           .bindTooltip(getRegionTooltipHtml(summary), {
@@ -735,16 +746,18 @@ function LeafletRegionMap({
         marker.addTo(markerLayerRef.current);
       }
 
+      mapRef.current.invalidateSize({ pan: false });
+
       const selectedSummary = mapSummaries.find((summary) => summary.regionKey === selectedRegion);
       if (selectedSummary) {
         const point = REGION_GEO_POINTS[selectedSummary.regionKey] ?? REGION_GEO_POINTS.unknown;
-        mapRef.current.flyTo([point.lat, point.lng], 8, { duration: 0.45 });
+        window.setTimeout(() => mapRef.current?.flyTo([point.lat, point.lng], 8, { duration: 0.45 }), 0);
       } else if (mapSummaries.length > 0) {
         const bounds = L.latLngBounds(mapSummaries.map((summary) => {
           const point = REGION_GEO_POINTS[summary.regionKey] ?? REGION_GEO_POINTS.unknown;
           return [point.lat, point.lng];
         }));
-        mapRef.current.fitBounds(bounds, { padding: [28, 28], maxZoom: 6 });
+        window.setTimeout(() => mapRef.current?.fitBounds(bounds, { padding: [28, 28], maxZoom: 6 }), 0);
       }
     }
 
@@ -831,8 +844,8 @@ function RegionSummaryPanel({
             {summary.total} sources · {summary.monitored} monitored
           </p>
         </div>
-        <span className="rounded-full px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white" style={{ background: style.fill }}>
-          {style.label}
+        <span className="shrink-0 whitespace-nowrap rounded-full px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white" style={{ background: style.fill }}>
+          {tone === "risk" ? "Attention" : style.label}
         </span>
       </div>
 

@@ -259,6 +259,9 @@ body {
   z-index: 0;
   background: var(--g100);
 }
+.region-leaflet-shell .leaflet-tile {
+  filter: saturate(0.25) contrast(0.92) brightness(1.04);
+}
 .region-leaflet-shell .leaflet-pane { z-index: 1; }
 .region-leaflet-shell .leaflet-tile-pane { z-index: 1; }
 .region-leaflet-shell .leaflet-overlay-pane { z-index: 2; }
