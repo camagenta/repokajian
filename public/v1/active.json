@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-06T18:12:58.255Z",
+  "generated_at": "2026-06-07T18:10:20.083Z",
   "version": "v1.0.0",
-  "total_sources": 11,
+  "total_sources": 10,
   "sources": [
     {
       "id": "tg-mthilyatunnisa",
@@ -139,27 +139,6 @@
       "verified": false,
       "added_at": "2026-05-16",
       "notes": "Ustadz Muflih Safitra official channel",
-      "source_type": "channel"
-    },
-    {
-      "id": "tg-jadwalkajiankaskus",
-      "name": "Jadwal Kajian Kaskus",
-      "platform": "tg",
-      "url": "https://t.me/jadwal_kajian_kaskus",
-      "handle": "jadwal_kajian_kaskus",
-      "category": [
-        "aggregator"
-      ],
-      "region": "nasional",
-      "language": "id",
-      "priority": 1,
-      "tags": [
-        "jadwal",
-        "kajian"
-      ],
-      "verified": false,
-      "added_at": "2026-05-16",
-      "notes": "",
       "source_type": "channel"
     },
     {
