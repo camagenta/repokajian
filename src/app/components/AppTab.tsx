@@ -526,7 +526,7 @@ function MiniStat({ label, value, accent }: { label: string; value: number; acce
   return (
     <div className="rounded-lg border border-[var(--g300)] bg-[var(--ivory)] px-3 py-3">
       <div className="eyebrow !text-[9.5px] mb-2">{label}</div>
-      <div className={`font-serif text-[26px] leading-none ${color}`}>{value}</div>
+      <div className={`font-display text-[26px] leading-none ${color}`}>{value}</div>
     </div>
   );
 }
@@ -562,7 +562,7 @@ function RegionHealthPanel({
           </p>
         </div>
         <div className="rounded-lg border border-[var(--g300)] bg-[var(--ivory)] px-3 py-2 text-right">
-          <div className="font-serif text-[24px] leading-none text-[var(--slate)]">{totalRegions}</div>
+          <div className="font-display text-[24px] leading-none text-[var(--slate)]">{totalRegions}</div>
           <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--g500)]">regions</div>
         </div>
       </div>
@@ -852,11 +852,11 @@ function RegionSummaryPanel({
       <div className="mb-4 grid grid-cols-2 gap-2">
         <div className="rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-3 py-2">
           <div className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-[var(--g500)]">Avg score</div>
-          <div className="mt-1 font-serif text-[26px] leading-none text-[var(--slate)]">{formatRegionScore(summary)}</div>
+          <div className="mt-1 font-display text-[26px] leading-none text-[var(--slate)]">{formatRegionScore(summary)}</div>
         </div>
         <div className="rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-3 py-2">
           <div className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-[var(--g500)]">Active ratio</div>
-          <div className="mt-1 font-serif text-[26px] leading-none text-[var(--slate)]">{formatRegionRatio(summary).replace(" active", "")}</div>
+          <div className="mt-1 font-display text-[26px] leading-none text-[var(--slate)]">{formatRegionRatio(summary).replace(" active", "")}</div>
         </div>
       </div>
 
@@ -969,7 +969,7 @@ function ScoreExplainer() {
           <div className="grid gap-2.5">
             {SCORE_TIERS.map((t) => (
               <div key={t.range} className="grid grid-cols-[72px_1px_minmax(0,1fr)] items-center gap-4">
-                <span className={`font-serif text-[21px] leading-none tabular-nums text-right ${t.color}`}>{t.range}</span>
+                <span className={`font-display text-[21px] leading-none tabular-nums text-right ${t.color}`}>{t.range}</span>
                 <span className="h-6 w-px bg-[var(--g200)]" aria-hidden="true" />
                 <span className="text-[12.5px] leading-5 text-[var(--g700)]">{t.label}</span>
               </div>
@@ -1076,7 +1076,7 @@ function Stat({ label, value, accent }: { label: string; value: number; accent?:
   return (
     <div className="rounded-xl border border-[var(--g300)] bg-[var(--paper)] p-4">
       <div className="eyebrow !text-[10px] mb-2">{label}</div>
-      <div className={`font-serif text-[32px] leading-none ${color}`}>{value}</div>
+      <div className={`font-display text-[32px] leading-none ${color}`}>{value}</div>
     </div>
   );
 }
@@ -1277,7 +1277,7 @@ export function AppTab({
       {/* Stats hero */}
       <section className="mb-10">
         <p className="eyebrow mb-3">Phase 1 · Telegram Health Check Live</p>
-        <h2 className="font-serif text-[clamp(28px,3.6vw,40px)] leading-tight text-[var(--slate)] max-w-[22ch]">
+        <h2 className="font-display text-[clamp(28px,3.6vw,40px)] leading-tight text-[var(--slate)] max-w-[22ch]">
           Sumber kajian bukan sekadar daftar — ada yang{" "}
           <em className="italic text-[var(--clay)]">aktif</em>, ada yang{" "}
           <em className="italic text-[var(--clay)]">mati {oldestDeadLabel}</em>.

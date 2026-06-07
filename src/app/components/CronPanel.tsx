@@ -122,7 +122,7 @@ export function CronPanel({ lastRunAt }: { lastRunAt: string | null }) {
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div>
           <p className="eyebrow !text-[10.5px] mb-2">Cron Trigger</p>
-          <h3 className="font-serif text-[20px] text-[var(--slate)]">
+          <h3 className="font-display text-[20px] text-[var(--slate)]">
             Health check on demand or on schedule
           </h3>
         </div>

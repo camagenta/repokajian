@@ -344,78 +344,81 @@ export function OpenContributionTab({ sources }: { sources: Source[] }) {
     <section className="mx-auto max-w-[1180px] px-8 py-10 space-y-8">
       <ContributionForm sources={sources} />
 
-      <div className="rounded-2xl border border-[var(--g300)] bg-white p-6 md:p-8 shadow-sm">
-        <p className="eyebrow mb-3">Phase 3 · Done</p>
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-[var(--slate)] mb-3">
-          Open Contribution (Git PR-based)
-        </h2>
-        <p className="text-[15px] leading-relaxed text-[var(--g700)] mb-6 max-w-3xl">
-          Siapapun bisa mengusulkan source baru lewat file kecil di contribution intake. Registry resmi tetap curated oleh maintainer.
-        </p>
+      <details className="group rounded-xl border border-[var(--g300)] bg-white shadow-sm">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-[var(--g100)] md:px-5">
+          <div className="min-w-0">
+            <p className="eyebrow mb-1">Maintainer info</p>
+            <h2 className="text-[15px] font-semibold text-[var(--slate)]">
+              Jalur PR, CI review, dan promote registry
+            </h2>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-[var(--g500)]">
+              Detail teknis untuk maintainer. Contributor cukup pakai form intake di atas.
+            </p>
+          </div>
+          <span className="shrink-0 rounded-md border border-[var(--g300)] bg-[var(--paper)] px-3 py-1.5 font-mono text-[11px] text-[var(--g700)]">
+            <span className="group-open:hidden">Buka</span>
+            <span className="hidden group-open:inline">Tutup</span>
+          </span>
+        </summary>
 
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-          {[
-            ["1", "Intake", "data/contributions/pending/*.json"],
-            ["2", "CI Review", "validate:contributions"],
-            ["3", "Promote", "data/sources.json"],
-          ].map(([num, title, desc]) => (
-            <div key={title} className="rounded-xl border border-[var(--g300)] bg-[var(--paper)] p-4">
-              <div className="mb-2 font-mono text-[10px] text-[var(--clay)]">0{num}</div>
-              <div className="font-semibold text-[13.5px] text-[var(--slate)]">{title}</div>
-              <div className="mt-1 font-mono text-[11px] text-[var(--g500)] break-all">{desc}</div>
+        <div className="border-t border-[var(--g300)] px-4 py-5 md:px-5">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+            {[
+              ["1", "Intake", "data/contributions/pending/*.json"],
+              ["2", "CI Review", "validate:contributions"],
+              ["3", "Promote", "data/sources.json"],
+            ].map(([num, title, desc]) => (
+              <div key={title} className="rounded-lg border border-[var(--g300)] bg-[var(--paper)] p-3">
+                <div className="mb-2 font-mono text-[10px] text-[var(--clay)]">0{num}</div>
+                <div className="font-semibold text-[13.5px] text-[var(--slate)]">{title}</div>
+                <div className="mt-1 break-all font-mono text-[11px] text-[var(--g500)]">{desc}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-7">
+            <ol className="list-decimal space-y-2 pl-5 text-[13.5px] text-[var(--g700)]">
+              <li>Buat issue: <code>Source Add</code> atau <code>Source Update</code>.</li>
+              <li>Fork repo, tambah file di <code>data/contributions/pending/</code>, lalu buka PR.</li>
+              <li>Jalankan validasi lokal: <code>npm run validate:contributions</code>.</li>
+              <li>CI menjalankan schema/duplicate check + link check warning-only.</li>
+            </ol>
+
+            <div className="rounded-lg border border-[var(--g300)] bg-[var(--paper)] p-4 text-[13px] text-[var(--g700)]">
+              <p className="mb-2 font-medium text-[var(--slate)]">Referensi maintainer:</p>
+              <div className="space-y-1">
+                <p><code>CONTRIBUTING.md</code></p>
+                <p><code>docs/CONTRIBUTING.md</code></p>
+                <p><code>docs/in-app/07-contributing.md</code></p>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Animated walkthrough — collapsed by default (form above is the primary action) */}
-        <details className="mt-8 group">
-          <summary className="cursor-pointer list-none text-[13.5px] font-medium text-[var(--clay)] hover:opacity-70">
-            <span className="group-open:hidden">▸ Lihat cara kerja jalur PR (walkthrough)</span>
-            <span className="hidden group-open:inline">▾ Sembunyikan walkthrough</span>
-          </summary>
           <ContributionWalkthrough />
-        </details>
 
-        {/* Step list (static reference) */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-          <ol className="list-decimal pl-5 space-y-2 text-[14.5px] text-[var(--g700)]">
-            <li>Buat issue: <code>Source Add</code> atau <code>Source Update</code>.</li>
-            <li>Fork repo, tambah file di <code>data/contributions/pending/</code>, lalu buka PR.</li>
-            <li>Jalankan validasi lokal: <code>npm run validate:contributions</code>.</li>
-            <li>CI menjalankan schema/duplicate check + link check warning-only.</li>
-          </ol>
-
-          <div className="rounded-xl border border-[var(--g300)] bg-[var(--paper)] p-4 text-[13.5px] text-[var(--g700)] space-y-1">
-            <p className="font-medium text-[var(--slate)] mb-2">Detail lengkap:</p>
-            <p><code>CONTRIBUTING.md</code></p>
-            <p><code>docs/CONTRIBUTING.md</code></p>
-            <p><code>docs/in-app/07-contributing.md</code></p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a
+              href="https://github.com/t-onluring/vibathon-2026"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg bg-[var(--slate)] px-4 py-2 text-[13px] font-semibold text-[var(--ivory)] no-underline transition-opacity hover:opacity-85"
+            >
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+              </svg>
+              View on GitHub
+            </a>
+            <a
+              href="https://github.com/t-onluring/vibathon-2026/blob/main/CONTRIBUTING.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-4 py-2 text-[13px] font-medium text-[var(--g700)] no-underline transition-colors hover:border-[var(--clay)] hover:text-[var(--clay)]"
+            >
+              Contributing Guide
+            </a>
           </div>
         </div>
-
-        {/* CTAs */}
-        <div className="mt-8 flex gap-3 flex-wrap">
-          <a
-            href="https://github.com/t-onluring/vibathon-2026"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--slate)] px-5 py-2.5 text-[13.5px] font-semibold text-[var(--ivory)] no-underline hover:opacity-85 transition-opacity"
-          >
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-            </svg>
-            View on GitHub
-          </a>
-          <a
-            href="https://github.com/t-onluring/vibathon-2026/blob/main/CONTRIBUTING.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-5 py-2.5 text-[13.5px] font-medium text-[var(--g700)] no-underline hover:border-[var(--clay)] hover:text-[var(--clay)] transition-colors"
-          >
-            Contributing Guide
-          </a>
-        </div>
-      </div>
+      </details>
     </section>
   );
 }

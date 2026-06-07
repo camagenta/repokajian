@@ -64,7 +64,7 @@ export function ArchitectureTab() {
       {/* Header */}
       <div className="mb-10">
         <p className="eyebrow mb-2">03 · Three Data Pipelines</p>
-        <h2 className="font-serif text-[clamp(28px,3.4vw,40px)] leading-tight text-[var(--slate)] mb-3">
+        <h2 className="font-display text-[clamp(28px,3.4vw,40px)] leading-tight text-[var(--slate)] mb-3">
           Architecture
         </h2>
         <p className="text-[15px] text-[var(--g700)] max-w-[480px] leading-relaxed">

@@ -66,7 +66,7 @@ export function RoadmapSection() {
   return (
     <div ref={ref} className="mb-10 rounded-2xl border border-[var(--g300)] bg-[var(--paper)] p-6">
       <p className="eyebrow mb-2">Peta Jalan</p>
-      <h2 className="font-serif text-[clamp(22px,2.8vw,30px)] leading-tight text-[var(--slate)] mb-6">
+      <h2 className="font-display text-[clamp(22px,2.8vw,30px)] leading-tight text-[var(--slate)] mb-6">
         Fase utama tetap 0-4, dengan Phase 1.5 sudah closed out.
       </h2>
 

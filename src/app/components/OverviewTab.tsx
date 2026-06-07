@@ -298,7 +298,7 @@ export function OverviewTab({
         }}
       >
         <p className="eyebrow mb-3">Kajian Source List · Open Registry</p>
-        <h2 className="font-serif text-[clamp(28px,3.8vw,44px)] leading-tight text-[var(--slate)] mb-4 max-w-[26ch]">
+        <h2 className="font-display text-[clamp(28px,3.8vw,44px)] leading-tight text-[var(--slate)] mb-4 max-w-[26ch]">
           Open registry sumber kajian dengan{" "}
           <em className="italic text-[var(--clay)]">automated health monitoring</em>.
         </h2>
@@ -316,7 +316,7 @@ export function OverviewTab({
                 { label: "Monitored", value: monitored, color: "#5B8FB9" },
             ].map((s) => (
               <div key={s.label}>
-                <span className="font-serif text-[40px] leading-none font-medium" style={{ color: s.color }}>
+                <span className="font-display text-[40px] leading-none font-medium" style={{ color: s.color }}>
                   {s.value}
                 </span>
                 <span className="ml-2 font-mono text-[11px] text-[var(--g500)] uppercase tracking-[0.08em]">

@@ -20,7 +20,7 @@ export function FeedbackFAB() {
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="fixed bottom-6 right-6 z-[999] flex items-center no-underline"
+      className="fixed bottom-6 right-6 z-[999] hidden items-center no-underline sm:flex"
       style={{
         gap: 10,
         padding: hovered ? "14px 22px" : "14px 18px",

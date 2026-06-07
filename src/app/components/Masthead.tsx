@@ -65,7 +65,7 @@ export function Masthead({
 
         {/* Title */}
         <h1
-          className="font-serif text-[clamp(34px,5vw,58px)] leading-[1.06] tracking-[-0.018em] text-[var(--slate)] mb-4 max-w-[22ch] transition-all duration-700"
+          className="font-display text-[clamp(34px,5vw,58px)] leading-[1.06] tracking-[-0.018em] text-[var(--slate)] mb-4 max-w-[22ch] transition-all duration-700"
           style={{
             fontWeight: 500,
             opacity: visible ? 1 : 0,

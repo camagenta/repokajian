@@ -84,6 +84,7 @@ function fieldOf(message: string): string {
 
 export function ContributionForm({ sources }: { sources: Source[] }) {
   const [f, setF] = useState<FormState>(EMPTY);
+  const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({});
   const [showJson, setShowJson] = useState(false);
 
   const tgParents = useMemo(
@@ -100,13 +101,17 @@ export function ContributionForm({ sources }: { sources: Source[] }) {
     const map: Record<string, string> = {};
     for (const msg of errors) {
       const key = fieldOf(msg);
-      if (!map[key]) map[key] = msg;
+      if (touched[key as keyof FormState] && !map[key]) map[key] = msg;
     }
     return map;
-  }, [errors]);
+  }, [errors, touched]);
 
-  const set = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+  const hasTouchedFields = Object.keys(touched).length > 0;
+
+  const set = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setTouched((prev) => ({ ...prev, [key]: true }));
     setF((prev) => ({ ...prev, [key]: e.target.value }));
+  };
 
   const isTopic = f.source_type === "topic";
 
@@ -203,7 +208,7 @@ export function ContributionForm({ sources }: { sources: Source[] }) {
         </div>
       )}
 
-      {errors.length > 0 && (
+      {hasTouchedFields && errors.length > 0 && (
         <div aria-live="polite" className="mt-4 text-[12.5px] text-[#B4493B]">
           Lengkapi {errors.length} kolom yang belum valid sebelum mengirim.
         </div>

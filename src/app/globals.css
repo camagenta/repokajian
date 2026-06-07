@@ -2,6 +2,7 @@
 @import "leaflet/dist/leaflet.css";
 
 :root {
+  /* Core palette */
   --ivory:  #FAF9F5;
   --paper:  #FFFFFF;
   --slate:  #141413;
@@ -9,34 +10,69 @@
   --clay-d: #B85C3E;
   --oat:    #E3DACC;
   --olive:  #788C5D;
+
+  /* Semantic (new) */
+  --jade:   #4D7C5F;
+  --amber:  #C4831A;
+  --rust:   #B84040;
+
+  /* Neutral scale */
   --g100:   #F0EEE6;
   --g200:   #E6E3DA;
   --g300:   #D1CFC5;
   --g500:   #87867F;
   --g700:   #3D3D3A;
 
-  --font-serif: ui-serif, Georgia, "Times New Roman", Times, serif;
-  --font-sans-stack: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono-stack: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  /* Font stacks */
+  --font-display-stack: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans-stack:    var(--font-plus-jakarta), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif-stack:   var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-mono-stack:    var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* Motion */
+  --duration-micro:  100ms;
+  --duration-short:  150ms;
+  --duration-medium: 250ms;
+  --duration-long:   400ms;
+  --ease-enter:  cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:   cubic-bezier(0.4, 0, 1, 1);
+  --ease-move:   cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+  --ivory:  #1A1916;
+  --paper:  #211F1B;
+  --slate:  #F0EDE4;
+  --oat:    #2E2B25;
+  --g100:   #242219;
+  --g200:   #2E2B25;
+  --g300:   #3D3A32;
+  --g500:   #8C8B83;
+  --g700:   #C8C5BA;
 }
 
 @theme inline {
-  --color-ivory: var(--ivory);
-  --color-paper: var(--paper);
+  --color-ivory:     var(--ivory);
+  --color-paper:     var(--paper);
   --color-slate-ink: var(--slate);
-  --color-clay: var(--clay);
-  --color-clay-d: var(--clay-d);
-  --color-oat: var(--oat);
-  --color-olive: var(--olive);
-  --color-g100: var(--g100);
-  --color-g200: var(--g200);
-  --color-g300: var(--g300);
-  --color-g500: var(--g500);
-  --color-g700: var(--g700);
+  --color-clay:      var(--clay);
+  --color-clay-d:    var(--clay-d);
+  --color-oat:       var(--oat);
+  --color-olive:     var(--olive);
+  --color-jade:      var(--jade);
+  --color-amber:     var(--amber);
+  --color-rust:      var(--rust);
+  --color-g100:      var(--g100);
+  --color-g200:      var(--g200);
+  --color-g300:      var(--g300);
+  --color-g500:      var(--g500);
+  --color-g700:      var(--g700);
 
-  --font-serif: var(--font-serif);
-  --font-sans: var(--font-sans-stack);
-  --font-mono: var(--font-mono-stack);
+  --font-display: var(--font-display-stack);
+  --font-serif:   var(--font-serif-stack);
+  --font-sans:    var(--font-sans-stack);
+  --font-mono:    var(--font-mono-stack);
 }
 
 * { box-sizing: border-box; }
@@ -48,19 +84,22 @@ body {
   font-family: var(--font-sans-stack);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  transition: background var(--duration-medium) var(--ease-move),
+              color var(--duration-medium) var(--ease-move);
 }
 
 /* === Markdown rendering (.prose-doc) ====================================== */
 .prose-doc {
+  font-family: var(--font-serif-stack);
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--g700);
 }
 .prose-doc h1, .prose-doc h2, .prose-doc h3, .prose-doc h4 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display-stack);
   color: var(--slate);
-  font-weight: 500;
-  letter-spacing: -0.012em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   margin: 2.2em 0 0.6em;
   scroll-margin-top: 96px;
 }
@@ -73,7 +112,7 @@ body {
 }
 .prose-doc h2 { font-size: 26px; }
 .prose-doc h3 { font-size: 20px; color: var(--g700); }
-.prose-doc h4 { font-size: 17px; font-family: var(--font-sans-stack); text-transform: uppercase; letter-spacing: 0.08em; color: var(--g500); }
+.prose-doc h4 { font-size: 13px; font-family: var(--font-mono-stack); text-transform: uppercase; letter-spacing: 0.1em; color: var(--g500); font-weight: 500; }
 .prose-doc p { margin: 0.9em 0; }
 .prose-doc a { color: var(--clay); text-decoration: underline; text-decoration-color: var(--oat); text-underline-offset: 3px; }
 .prose-doc a:hover { text-decoration-color: var(--clay); }
@@ -128,12 +167,12 @@ body {
 }
 .prose-doc th {
   background: var(--g100);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--slate);
-  font-family: var(--font-sans-stack);
-  font-size: 13px;
+  font-family: var(--font-mono-stack);
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
 }
 .prose-doc hr { border: 0; border-top: 1.5px solid var(--g300); margin: 2.4em 0; }
 .prose-doc img { max-width: 100%; border-radius: 8px; }
@@ -147,6 +186,16 @@ body {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
+/* Status: active — slow jade pulse */
+@keyframes pulse-active {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+/* Status: checking — clay pulse with subtle scale */
+@keyframes pulse-checking {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.55; transform: scale(0.82); }
+}
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -158,6 +207,15 @@ body {
 @keyframes count-in {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Reduced motion ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ===== Skeleton shimmer box ================================== */
