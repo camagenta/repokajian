@@ -1,6 +1,6 @@
 # Business Requirements Document (BRD)
 
-Dokumen ini menjelaskan *mengapa* proyek ini ada dan *apa* yang harus dicapai dari perspektif bisnis. Untuk detail teknis lihat `13-prd.md` dan `docs/superpowers/specs/2026-06-07-brd-design.md`.
+Dokumen ini menjelaskan *mengapa* proyek ini ada dan *apa* yang harus dicapai dari perspektif bisnis. Untuk detail teknis lihat `13-prd.md`.
 
 ## Masalah yang Diselesaikan
 

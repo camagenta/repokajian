@@ -4,6 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import type { Source } from "../lib/data";
 import { ContributionForm } from "./ContributionForm";
 
+const REPO_OWNER = process.env.NEXT_PUBLIC_REPO_OWNER ?? "t-onluring";
+const REPO_NAME = process.env.NEXT_PUBLIC_REPO_NAME ?? "vibathon-2026";
+const REPO_URL = `https://github.com/${REPO_OWNER}/${REPO_NAME}`;
+const CONTRIBUTING_URL = `${REPO_URL}/blob/main/docs/CONTRIBUTING.md`;
+
 // ===== Step definitions ===========================================
 
 const STEPS = [
@@ -398,7 +403,7 @@ export function OpenContributionTab({ sources }: { sources: Source[] }) {
 
           <div className="mt-5 flex flex-wrap gap-3">
             <a
-              href="https://github.com/t-onluring/vibathon-2026"
+              href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-[var(--slate)] px-4 py-2 text-[13px] font-semibold text-[var(--ivory)] no-underline transition-opacity hover:opacity-85"
@@ -409,7 +414,7 @@ export function OpenContributionTab({ sources }: { sources: Source[] }) {
               View on GitHub
             </a>
             <a
-              href="https://github.com/t-onluring/vibathon-2026/blob/main/CONTRIBUTING.md"
+              href={CONTRIBUTING_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border border-[var(--g300)] bg-[var(--paper)] px-4 py-2 text-[13px] font-medium text-[var(--g700)] no-underline transition-colors hover:border-[var(--clay)] hover:text-[var(--clay)]"

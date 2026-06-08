@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 .gstack/
 .cache/
+# agent / tooling scratch
+.serena/
+.agents/
+.claude/
+.codex/
+.remember/
+AGENTS.md
+CLAUDE.md

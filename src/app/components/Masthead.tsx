@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Source } from "../lib/data";
-
-export function Masthead({
-  sources,
-}: {
-  sources: Source[];
-}) {
+export function Masthead() {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLElement>(null);
 

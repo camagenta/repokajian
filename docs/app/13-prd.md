@@ -1,6 +1,6 @@
 # Product Requirements Document (PRD)
 
-Dokumen ini menjelaskan *apa* yang dibangun dan *bagaimana* mengukur keberhasilannya. Untuk detail bisnis lihat `12-brd.md`. Untuk data flow teknis lihat `docs/superpowers/specs/2026-06-07-data-flow-design.md`.
+Dokumen ini menjelaskan *apa* yang dibangun dan *bagaimana* mengukur keberhasilannya. Untuk detail bisnis lihat `12-brd.md`.
 
 ## Overview Produk
 

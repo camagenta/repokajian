@@ -25,8 +25,9 @@ export {
 };
 
 // Resolved by the maintainer (see design doc).
-export const NETLIFY_FORMS_ENABLED = true;
-export const MAINTAINER_EMAIL = "onluring@gmail.com";
+export const NETLIFY_FORMS_ENABLED = process.env.NEXT_PUBLIC_DISABLE_NETLIFY_FORMS !== "true";
+export const PRIMARY_SITE_URL = process.env.NEXT_PUBLIC_PRIMARY_SITE_URL ?? "https://repokajian.netlify.app";
+export const MAINTAINER_EMAIL = process.env.NEXT_PUBLIC_MAINTAINER_EMAIL ?? "onluring@gmail.com";
 export const NETLIFY_FORM_NAME = "source-intake";
 
 export interface IntakeItem {

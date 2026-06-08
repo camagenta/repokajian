@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: "📖 Documentation"
-    url: https://vibathon-2026.netlify.app
+    url: https://repokajian.netlify.app
     about: "Lihat dashboard dan docs di website"
   - name: "🤝 Contributing Guide"
-    url: https://github.com/t-onluring/vibathon-2026/blob/main/CONTRIBUTING.md
+    url: https://github.com/t-onluring/vibathon-2026/blob/main/docs/CONTRIBUTING.md
     about: "Panduan lengkap cara kontribusi"

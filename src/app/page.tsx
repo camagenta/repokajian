@@ -15,7 +15,7 @@ export default async function Home() {
 
   return (
     <>
-      <Masthead sources={sources} />
+      <Masthead />
       <AppShell docs={docs} sources={sources} latest={latest} topicDiscovery={topicDiscovery} healthHistory={healthHistory} />
     </>
   );

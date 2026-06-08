@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
-const REPO = "t-onluring/vibathon-2026";
+const REPO_OWNER = process.env.NEXT_PUBLIC_REPO_OWNER ?? "t-onluring";
+const REPO_NAME = process.env.NEXT_PUBLIC_REPO_NAME ?? "vibathon-2026";
+const REPO = `${REPO_OWNER}/${REPO_NAME}`;
 const WORKFLOW_FILE = "health-check.yml";
 const ACTIONS_URL = `https://github.com/${REPO}/actions/workflows/${WORKFLOW_FILE}`;
 const YAML_EDIT_URL = `https://github.com/${REPO}/edit/main/.github/workflows/${WORKFLOW_FILE}`;

@@ -7,6 +7,7 @@ import {
   MAINTAINER_EMAIL,
   NETLIFY_FORM_NAME,
   NETLIFY_FORMS_ENABLED,
+  PRIMARY_SITE_URL,
   type IntakeItem,
 } from "../lib/contribution-intake";
 
@@ -127,7 +128,7 @@ export function DeliveryButtons({
           Kirim ke maintainer. Kami yang akan memasukkannya ke registry.
         </p>
         <div className="flex flex-wrap gap-2">
-          {NETLIFY_FORMS_ENABLED && (
+          {NETLIFY_FORMS_ENABLED ? (
             <button
               type="button"
               onClick={submitNetlify}
@@ -136,7 +137,19 @@ export function DeliveryButtons({
             >
               {netlify === "sending" ? "Mengirim…" : netlify === "ok" ? "Terkirim ✓" : "Kirim ke maintainer"}
             </button>
-          )}
+          ) : PRIMARY_SITE_URL ? (
+            <a
+              href={disabled ? undefined : PRIMARY_SITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-disabled={disabled}
+              className={`${BTN} bg-[var(--clay)] text-white no-underline hover:opacity-85 ${
+                disabled ? "pointer-events-none opacity-50" : ""
+              }`}
+            >
+              Buka form online di situs utama
+            </a>
+          ) : null}
           <button
             type="button"
             onClick={copyJson}

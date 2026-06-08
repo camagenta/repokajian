@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { LatestSummary, Source } from "../lib/data";
 
+const PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_PUBLIC_SITE_URL ?? "https://repokajian.netlify.app";
+
 // ===== Layer diagram =============================================
 
 function LayerDiagram() {
@@ -105,7 +107,7 @@ function ApiPreview() {
   ];
 
   const copy = (text: string) => {
-    navigator.clipboard.writeText(`https://vibathon-2026.netlify.app${text}`).catch(() => {});
+    navigator.clipboard.writeText(`${PUBLIC_SITE_URL}${text}`).catch(() => {});
     setCopied(text);
     setTimeout(() => setCopied(null), 1800);
   };

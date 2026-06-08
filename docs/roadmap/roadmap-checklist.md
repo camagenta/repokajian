@@ -56,7 +56,7 @@ Note: parent/child visual grouping is deferred by the Phase 1.5 fallback plan be
 - [x] Freshness resolves `last_post_at` for 79/79 topics.
 - [x] Mapping summary is stable: 77 mapped, 2 ignored, 0 unmapped.
 - [x] Evaluator summary is stable across the valid 3-day window: active 30-34, stale 39-43, dead 4, blocked 0, ignored 2, error 0.
-- [x] Gate report exists: `docs/archive/TRACK-B-GATE-REPORT-2026-06-02.md`.
+- [x] Gate report completed before public cleanup; internal archive file is intentionally not included in the public repo.
 - [x] Complete valid Day-2 observation.
 - [x] Complete valid Day-3 observation.
 - [x] Promote final Track B decision from provisional `GO WITH GUARDRAILS` to final `GO WITH GUARDRAILS`.

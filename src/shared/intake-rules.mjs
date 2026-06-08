@@ -73,7 +73,10 @@ export function buildSlug(item) {
   return canonicalSegment(item.handle);
 }
 
-export const REPO = { owner: "t-onluring", repo: "vibathon-2026" };
+export const REPO = {
+  owner: process.env.NEXT_PUBLIC_REPO_OWNER ?? "t-onluring",
+  repo: process.env.NEXT_PUBLIC_REPO_NAME ?? "vibathon-2026",
+};
 
 /** @param {unknown} value */
 function hasItems(value) {

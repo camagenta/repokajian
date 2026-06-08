@@ -13,7 +13,6 @@ Dokumen ini jadi panduan singkat agar dokumentasi tetap rapi dan konsisten.
 - `docs/CONTRIBUTING.md` → panduan kontribusi (quick path + full guide)
 - `docs/app/` → **source of truth** konten docs untuk UI (`00-...md` s.d. `08-...md`)
 - `docs/roadmap/` → roadmap per fase dan quality gates
-- `docs/archive/` → arsip dokumen lama yang tidak ditampilkan di drawer
 - `docs/in-app/` → dokumen curated yang dirender di Docs drawer aplikasi
 
 ## 3) Aturan link

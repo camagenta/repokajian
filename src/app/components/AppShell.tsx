@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { OverviewTab } from "./OverviewTab";
 import { RoadmapSection } from "./RoadmapSection";
 import { AppTab } from "./AppTab";
@@ -27,11 +27,10 @@ export function AppShell({
 }) {
   const [tab, setTab] = useState<TabKey>("overview");
   const [docsOpen, setDocsOpen] = useState(false);
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    setDark(document.documentElement.dataset.theme === "dark");
-  }, []);
+  const [dark, setDark] = useState(() => {
+    if (typeof document === "undefined") return false;
+    return document.documentElement.dataset.theme === "dark";
+  });
 
   const toggleTheme = () => {
     const next = !dark;
