@@ -25,7 +25,9 @@
     "spike:topic-promote-draft": "tsx scripts/spikes/topic-promotion-draft-spike.ts",
     "spike:topic-promote-review-init": "tsx scripts/spikes/topic-promotion-review-init-spike.ts",
     "spike:topic-promote-apply": "tsx scripts/spikes/topic-promotion-apply-spike.ts",
-    "spike:session-gen": "tsx scripts/spikes/generate-telegram-session.ts"
+    "spike:session-gen": "tsx scripts/spikes/generate-telegram-session.ts",
+    "check:sources": "tsx scripts/check-sources.ts",
+    "test:checkers": "tsx scripts/test-checkers.ts"
   },
   "dependencies": {
     "cheerio": "^1.0.0",

@@ -32,6 +32,17 @@ export interface SnapshotItem {
   error?: string;
 }
 
+export interface PlatformChecker {
+  /** Platform key, e.g. "tg", "web", "wa". */
+  readonly platform: Platform;
+  /** Whether this source can be monitored by this adapter in the current phase. */
+  canMonitor(source: Source): boolean;
+  /** Check one source and return a standard snapshot item. Must handle its own errors. */
+  check(source: Source): Promise<SnapshotItem>;
+  /** Optional delay after this checker runs, used by the orchestrator for rate limiting. */
+  readonly staggerMs?: number;
+}
+
 export type HealthSnapshot = SnapshotItem;
 
 export interface LatestSummary {
