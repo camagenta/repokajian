@@ -1,6 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import type { Platform, HealthStatus, Source } from "../../shared/types";
+import { confidenceToPercent } from "./format";
 
 const ROOT = process.cwd();
 const DOCS_DIR = join(ROOT, "docs", "in-app");
@@ -126,11 +127,6 @@ export async function loadSources(): Promise<Source[]> {
   } catch {
     return [];
   }
-}
-
-function confidenceToPercent(score?: number | null): number | null {
-  if (typeof score !== "number") return null;
-  return Math.round(score * 100);
 }
 
 function snapshotScoreToPercent(snapshot: Snapshot): number | null {

@@ -59,20 +59,13 @@ function makeChecks(source: Source, metrics: { subscribers: number | null; last_
   ];
 }
 
-function classifyTelegramStatus(source: Source, metrics: { subscribers: number | null; last_post_at: string | null; last_post_age_hours: number | null }) {
-  if (metrics.last_post_at !== null) {
-    return statusFromAge(metrics.last_post_age_hours);
-  }
-
-  if (source.source_type === "group") {
+function classifyTelegramStatus(metrics: { last_post_at: string | null; last_post_age_hours: number | null }) {
+  // Without a detectable last post (e.g. group join gate, or public HTML that
+  // doesn't expose message timestamps) we can't assess freshness → blocked.
+  if (metrics.last_post_at === null) {
     return "blocked" as const;
   }
-
-  if (metrics.subscribers !== null) {
-    return "blocked" as const;
-  }
-
-  return "blocked" as const;
+  return statusFromAge(metrics.last_post_age_hours);
 }
 
 async function checkTelegramSource(source: Source): Promise<SnapshotItem> {
@@ -80,7 +73,7 @@ async function checkTelegramSource(source: Source): Promise<SnapshotItem> {
   try {
     const metrics = await fetchTelegramChannel(source.handle);
     const checks = makeChecks(source, metrics);
-    const status = classifyTelegramStatus(source, metrics);
+    const status = classifyTelegramStatus(metrics);
     const confidence_score = confidenceScoreFromMetrics(metrics);
 
     return {

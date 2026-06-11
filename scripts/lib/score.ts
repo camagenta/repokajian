@@ -16,10 +16,19 @@ export function freshnessScore(lastPostAgeHours: number | null): number {
   return 0;
 }
 
+/**
+ * Discrete health status. Derived from the same freshness buckets used by
+ * `freshnessScore` so the status thresholds can never drift from the score:
+ *   - active: score >= 80  (last post < 7 days)
+ *   - stale:  score 1–50   (last post 7–30 days)
+ *   - dead:   score 0      (last post >= 30 days)
+ *   - error:  age unknown
+ */
 export function statusFromAge(lastPostAgeHours: number | null): HealthStatus {
   if (lastPostAgeHours === null) return "error";
-  if (lastPostAgeHours < HOURS.SEVEN_DAYS) return "active";
-  if (lastPostAgeHours < HOURS.THIRTY_DAYS) return "stale";
+  const score = freshnessScore(lastPostAgeHours);
+  if (score >= 80) return "active";
+  if (score > 0) return "stale";
   return "dead";
 }
 
