@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Source } from "../lib/data";
+import type { Source, Snapshot } from "../lib/data";
 import { ContributionForm } from "./ContributionForm";
+import { ContributionWizard } from "./ContributionWizard";
+import { NETLIFY_FORM_NAME } from "../lib/contribution-intake";
 
 const REPO_OWNER = process.env.NEXT_PUBLIC_REPO_OWNER ?? "t-onluring";
 const REPO_NAME = process.env.NEXT_PUBLIC_REPO_NAME ?? "vibathon-2026";
@@ -344,20 +346,33 @@ function ContributionWalkthrough() {
 
 // ===== Main tab ==================================================
 
-export function OpenContributionTab({ sources }: { sources: Source[] }) {
+export function OpenContributionTab({
+  sources,
+  snapshotById,
+}: {
+  sources: Source[];
+  snapshotById: Map<string, Snapshot>;
+}) {
   return (
     <section className="mx-auto max-w-[1180px] px-8 py-10 space-y-8">
-      <ContributionForm sources={sources} />
+      {/* Hidden form for Netlify Forms build detection */}
+      <form name={NETLIFY_FORM_NAME} data-netlify="true" hidden>
+        <input name="payload" />
+      </form>
 
+      {/* Simplified guided wizard for all users */}
+      <ContributionWizard sources={sources} snapshotById={snapshotById} />
+
+      {/* PR path for developers — collapsed by default */}
       <details className="group rounded-xl border border-[var(--g300)] bg-white shadow-sm">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-[var(--g100)] md:px-5">
           <div className="min-w-0">
-            <p className="eyebrow mb-1">Maintainer info</p>
+            <p className="eyebrow mb-1">Untuk developer</p>
             <h2 className="text-[15px] font-semibold text-[var(--slate)]">
-              Jalur PR, CI review, dan promote registry
+              Saya developer — ingin berkontribusi via Pull Request
             </h2>
             <p className="mt-1 text-[12.5px] leading-relaxed text-[var(--g500)]">
-              Detail teknis untuk maintainer. Contributor cukup pakai form intake di atas.
+              Fork repo, tambah intake JSON, buka PR. Lebih lengkap dan langsung masuk ke CI pipeline.
             </p>
           </div>
           <span className="shrink-0 rounded-md border border-[var(--g300)] bg-[var(--paper)] px-3 py-1.5 font-mono text-[11px] text-[var(--g700)]">
@@ -367,7 +382,9 @@ export function OpenContributionTab({ sources }: { sources: Source[] }) {
         </summary>
 
         <div className="border-t border-[var(--g300)] px-4 py-5 md:px-5">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          <ContributionForm sources={sources} />
+
+          <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
             {[
               ["1", "Intake", "data/contributions/pending/*.json"],
               ["2", "CI Review", "validate:contributions"],

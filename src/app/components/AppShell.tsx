@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore, type KeyboardEvent } from "react";
+import { useState, useMemo, useSyncExternalStore, type KeyboardEvent } from "react";
 import { OverviewTab } from "./OverviewTab";
 import { RoadmapSection } from "./RoadmapSection";
 import { AppTab } from "./AppTab";
@@ -8,7 +8,7 @@ import { ArchitectureTab } from "./ArchitectureTab";
 import { OpenContributionTab } from "./OpenContributionTab";
 import { DocsDrawer } from "./DocsDrawer";
 import { FeedbackFAB } from "./FeedbackFAB";
-import type { DocFile, HealthHistoryPoint, LatestSummary, Source, TopicDiscovery } from "../lib/data";
+import type { DocFile, HealthHistoryPoint, LatestSummary, Snapshot, Source, TopicDiscovery } from "../lib/data";
 
 type TabKey = "overview" | "roadmap" | "architecture" | "app" | "contribution";
 
@@ -50,6 +50,11 @@ export function AppShell({
   const [tab, setTab] = useState<TabKey>("overview");
   const [docsOpen, setDocsOpen] = useState(false);
   const dark = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getServerThemeSnapshot);
+
+  const snapshotById = useMemo(
+    () => new Map<string, Snapshot>(latest?.snapshots.map((s) => [s.source_id, s]) ?? []),
+    [latest]
+  );
 
   const toggleTheme = () => {
     const next = !dark;
@@ -166,7 +171,7 @@ export function AppShell({
           <AppTab sources={sources} latest={latest} topicDiscovery={topicDiscovery} healthHistory={healthHistory} />
         </div>
         <div role="tabpanel" id="panel-contribution" aria-labelledby="tab-contribution" hidden={tab !== "contribution"}>
-          <OpenContributionTab sources={sources} />
+          <OpenContributionTab sources={sources} snapshotById={snapshotById} />
         </div>
       </main>
 
