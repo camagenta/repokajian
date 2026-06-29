@@ -1,19 +1,19 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "MASJID MUADZ BIN JABAL BOGOR",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/muadzbinjabal",
+  "handle": "@muadzbinjabal",
+  "region": "bogor",
   "category": [
+    "masjid",
     "kajian",
-    "komunitas",
-    "online"
+    "bogor"
   ],
   "tags": [
+    "masjid",
     "kajian",
-    "komunitas",
-    "online"
+    "bogor"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

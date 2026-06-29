@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "MT AL IKHLAS JBE BEKASI",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/mtalikhlashjbe",
+  "handle": "@mtalikhlashjbe",
+  "region": "bekasi",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "bekasi"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "bekasi"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

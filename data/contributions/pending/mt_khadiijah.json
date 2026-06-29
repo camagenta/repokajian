@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "MT KHADIJAH",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
+  "url": "https://t.me/mt_khadiijah",
+  "handle": "@mt_khadiijah",
   "region": "nasional",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "muslimah"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "muslimah"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

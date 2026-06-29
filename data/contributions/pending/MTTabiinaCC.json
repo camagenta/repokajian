@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "MT TABIINA AS SUNNAH AL WAFA (MASJID SHAFA MARWAH CIBUBUR)",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/MTTabiinaCC",
+  "handle": "@MTTabiinaCC",
+  "region": "cibubur",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "cibubur"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "cibubur"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

@@ -1,19 +1,21 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "WLINGI MENGAJI",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/wlingimengaji",
+  "handle": "@wlingimengaji",
+  "region": "wlingi",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "wlingi",
+    "blitar",
+    "jawa timur"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "wlingi",
+    "blitar",
+    "jawa timur"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

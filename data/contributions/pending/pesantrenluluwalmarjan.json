@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "PESANTREN LULU WALMARJAN MAGELANG",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/pesantrenluluwalmarjan",
+  "handle": "@pesantrenluluwalmarjan",
+  "region": "magelang",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "magelang"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "magelang"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

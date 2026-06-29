@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "MAJLIS IMAM NAWAWI CIOMAS BOGOR",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/majelisimamnawawi",
+  "handle": "@majelisimamnawawi",
+  "region": "bogor",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "bogor"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "bogor"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

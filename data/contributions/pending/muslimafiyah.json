@@ -1,19 +1,15 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "MUSLIMAFIYAH",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
+  "url": "https://t.me/muslimafiyah",
+  "handle": "@muslimafiyah",
   "region": "nasional",
   "category": [
-    "kajian",
-    "komunitas",
-    "online"
+    "kajian"
   ],
   "tags": [
-    "kajian",
-    "komunitas",
-    "online"
+    "kajian"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

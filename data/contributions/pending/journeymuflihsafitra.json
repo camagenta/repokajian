@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "USTADZ MUFLIH SAFITRA",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
+  "url": "https://t.me/journeymuflihsafitra",
+  "handle": "@journeymuflihsafitra",
   "region": "nasional",
   "category": [
-    "kajian",
-    "komunitas",
-    "online"
+    "ustadz",
+    "kajian"
   ],
   "tags": [
-    "kajian",
-    "komunitas",
-    "online"
+    "ustadz",
+    "kajian"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

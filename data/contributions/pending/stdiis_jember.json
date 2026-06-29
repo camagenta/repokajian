@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "STDIIS JEMBER",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/stdiis_jember",
+  "handle": "@stdiis_jember",
+  "region": "jember",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "jember"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "jember"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

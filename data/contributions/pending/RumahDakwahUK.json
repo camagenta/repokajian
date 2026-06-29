@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "RUMAH DAKWAH UK",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/RumahDakwahUK",
+  "handle": "@RumahDakwahUK",
+  "region": "united-kingdom",
   "category": [
     "kajian",
-    "komunitas",
-    "online"
+    "luar-negeri"
   ],
   "tags": [
     "kajian",
-    "komunitas",
-    "online"
+    "luar-negeri"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

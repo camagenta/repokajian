@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "RADIO TARBIYAH SUNNAH",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
+  "url": "https://t.me/radiotarbiyahsunnah",
+  "handle": "@radiotarbiyahsunnah",
   "region": "nasional",
   "category": [
-    "kajian",
-    "komunitas",
-    "online"
+    "radio",
+    "kajian"
   ],
   "tags": [
-    "kajian",
-    "komunitas",
-    "online"
+    "radio",
+    "kajian"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

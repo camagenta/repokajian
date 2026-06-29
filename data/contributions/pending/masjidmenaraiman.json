@@ -1,19 +1,19 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "MASJID MENARA IMAN KUDUS",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
-  "region": "nasional",
+  "url": "https://t.me/masjidmenaraiman",
+  "handle": "@masjidmenaraiman",
+  "region": "kudus",
   "category": [
+    "masjid",
     "kajian",
-    "komunitas",
-    "online"
+    "kudus"
   ],
   "tags": [
+    "masjid",
     "kajian",
-    "komunitas",
-    "online"
+    "kudus"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",

@@ -1,19 +1,17 @@
 {
-  "name": "Tarbiyah Sunnah Learning",
+  "name": "LAZ HSI BERBAGI",
   "platform": "tg",
   "source_type": "channel",
-  "url": "https://t.me/salamtsl",
-  "handle": "@salamtsl",
+  "url": "https://t.me/hsiberbagi",
+  "handle": "@hsiberbagi",
   "region": "nasional",
   "category": [
-    "kajian",
-    "komunitas",
-    "online"
+    "sosial",
+    "laz"
   ],
   "tags": [
-    "kajian",
-    "komunitas",
-    "online"
+    "sosial",
+    "laz"
   ],
   "evidence_url": "https://t.me/sijadwalkajian/192/7023",
   "submitted_by": "camagenta",
